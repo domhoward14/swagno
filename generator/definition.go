@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/domhoward14/swagno/components/definition"
-	"github.com/domhoward14/swagno/http/response"
-	"github.com/domhoward14/swagno/utils"
+	"github.com/go-swagno/swagno/components/definition"
+	"github.com/go-swagno/swagno/http/response"
+	"github.com/go-swagno/swagno/utils"
 )
 
 type DefinitionGenerator struct {

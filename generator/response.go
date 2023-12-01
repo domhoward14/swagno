@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/domhoward14/swagno/components/parameter"
-	"github.com/domhoward14/swagno/utils"
+	"github.com/go-swagno/swagno/components/parameter"
+	"github.com/go-swagno/swagno/utils"
 )
 
 type ResponseGenerator struct {

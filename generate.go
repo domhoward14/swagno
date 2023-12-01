@@ -5,11 +5,11 @@ import (
 	"log"
 	"strings"
 
-	"github.com/domhoward14/swagno/components/endpoint"
-	"github.com/domhoward14/swagno/components/mime"
-	"github.com/domhoward14/swagno/components/parameter"
-	"github.com/domhoward14/swagno/generator"
-	"github.com/domhoward14/swagno/http/response"
+	"github.com/go-swagno/swagno/components/endpoint"
+	"github.com/go-swagno/swagno/components/mime"
+	"github.com/go-swagno/swagno/components/parameter"
+	"github.com/go-swagno/swagno/generator"
+	"github.com/go-swagno/swagno/http/response"
 )
 
 func appendResponses(sourceResponses map[string]endpoint.JsonResponse, additionalResponses []response.Info) map[string]endpoint.JsonResponse {
