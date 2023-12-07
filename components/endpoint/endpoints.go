@@ -3,10 +3,12 @@ package endpoint
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/go-swagno/swagno/components/mime"
 	"github.com/go-swagno/swagno/components/parameter"
 	"github.com/go-swagno/swagno/http/response"
+	"github.com/go-swagno/swagno/utils"
 )
 
 // MethodType represents HTTP request methods.
@@ -110,8 +112,9 @@ func (e *EndPoint) GetPath() string {
 // GetBodyJsonParameter makes the body definitions and parameter for body if present. Parameters for body are described via schema
 // definition so that's why it doesn't use the 'Parameter' object like the other ones.
 func (e *EndPoint) GetBodyJsonParameter() *parameter.JsonParameter {
+	hash := utils.GenerateHash(utils.ConvertToString(e.Body))
 	if e.Body != nil {
-		bodyRef := fmt.Sprintf("#/definitions/%T", e.Body)
+		bodyRef := fmt.Sprintf("#/definitions/%T_%s", e.Body, hash)
 		bodySchema := parameter.JsonResponseSchema{
 			Ref: bodyRef,
 		}
@@ -120,7 +123,7 @@ func (e *EndPoint) GetBodyJsonParameter() *parameter.JsonParameter {
 			bodySchema = parameter.JsonResponseSchema{
 				Type: "array",
 				Items: &parameter.JsonResponseSchemeItems{
-					Ref: fmt.Sprintf("#/definitions/%T", e.Body),
+					Ref: strings.ReplaceAll(fmt.Sprintf("#/definitions/%T_%s", e.Body, hash), "[]", ""),
 				},
 			}
 		}

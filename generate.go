@@ -119,5 +119,5 @@ func (s *Swagger) createDefinitions(r []response.Info) {
 
 func (s *Swagger) createDefinition(t interface{}) {
 	generator := generator.NewDefinitionGenerator((*s).Definitions)
-	generator.CreateDefinition(t)
+	generator.CreateDefinition(t, "")
 }
