@@ -7,7 +7,6 @@ import (
 	"github.com/go-swagno/swagno-fiber/swagger"
 	"github.com/go-swagno/swagno/components/endpoint"
 	"github.com/go-swagno/swagno/components/mime"
-	"github.com/go-swagno/swagno/components/parameter"
 	"github.com/go-swagno/swagno/example/models"
 	"github.com/go-swagno/swagno/http/response"
 	"github.com/gofiber/fiber/v2"
@@ -22,43 +21,34 @@ func main() {
 			endpoint.WithMethod(endpoint.GET),
 			endpoint.WithPath("/product"),
 			endpoint.WithTags("product"),
-			endpoint.WithSuccessfulReturns([]response.Info{response.New([]models.Product{}, "200", "Product List")}),
+			endpoint.WithSuccessfulReturns([]response.Info{
+				response.New("string", "200", "Product List"),                                                        // OK
+				response.New(models.StructResponse1{}, "201", "Product List"),                                        // OK
+				response.New(models.StructResponse1{InterfaceType: "string"}, "202", "Product List"),                 // OK
+				response.New(models.StructResponse1{InterfaceType: models.StructResponse2{}}, "203", "Product List"), // OK
+				response.New([]int{}, "204", "Product List"),                                                         // OK
+				response.New([]*int{}, "205", "Product List"),                                                        // OK
+				response.New([][]int{}, "206", "Product List"),                                                       // OK
+				response.New([]models.StructResponse1{}, "207", "Product List"),                                      // OK
+				response.New([]*models.StructResponse1{}, "208", "Product List"),                                     // OK
+				response.New([]map[string]string{}, "209", "Product List"),                                           // OK
+				response.New([]interface{}{}, "210", "Product List"),                                                 // OK
+				response.New([]interface{}{models.StructResponse1{}}, "211", "Product List"),                         // not desired result
+				response.New([][]models.StructResponse1{}, "212", "Product List"),                                    // OK
+				response.New([][]*models.StructResponse1{}, "213", "Product List"),                                   // OK
+				response.New(map[string]int{"field": 123}, "214", "Product List"),                                    // OK
+				response.New(map[string]*int{}, "215", "Product List"),                                               // OK
+				response.New(map[string]models.StructResponse1{}, "216", "Product List"),                             // OK
+				response.New(map[string]*models.StructResponse1{}, "217", "Product List"),                            // OK
+				response.New(map[string][]models.StructResponse1{}, "218", "Product List"),                           // OK
+				response.New(map[string][]*models.StructResponse1{}, "219", "Product List"),                          // OK
+				response.New(map[string]interface{}{}, "220", "Product List"),                                        // OK
+				response.New(map[string]interface{}{"field": 123}, "221", "Product List"),                            // OK
+			}),
 			endpoint.WithDescription(desc),
 			endpoint.WithProduce([]mime.MIME{mime.JSON, mime.XML}),
 			endpoint.WithConsume([]mime.MIME{mime.JSON}),
 			endpoint.WithSummary("this is a test summary"),
-		),
-		endpoint.New(
-			endpoint.WithMethod(endpoint.GET),
-			endpoint.WithPath("/product/{id}"),
-			endpoint.WithTags("product"),
-			endpoint.WithParams(parameter.IntParam("id", parameter.WithIn(parameter.Path), parameter.WithRequired())),
-			endpoint.WithSuccessfulReturns([]response.Info{models.SuccessfulResponse{}}),
-			endpoint.WithErrors([]response.Info{models.UnsuccessfulResponse{}}),
-			endpoint.WithProduce([]mime.MIME{mime.JSON, mime.XML}),
-		),
-		endpoint.New(
-			endpoint.WithMethod(endpoint.GET),
-			endpoint.WithPath("/product/{id}/detail"),
-			endpoint.WithTags("product"),
-			endpoint.WithParams(parameter.IntParam("id", parameter.WithIn(parameter.Path), parameter.WithRequired())),
-			endpoint.WithSuccessfulReturns([]response.Info{response.New(models.MapTest{
-				"data": models.Product{},
-			}, "200", "")}),
-			endpoint.WithErrors([]response.Info{response.New(map[string]interface{}{
-				"error":     "Not Authorized",
-				"errorCode": 401,
-			}, "401", "Not Authorized")}),
-			endpoint.WithProduce([]mime.MIME{mime.JSON, mime.XML}),
-		),
-		endpoint.New(
-			endpoint.WithMethod(endpoint.POST),
-			endpoint.WithPath("/product"),
-			endpoint.WithTags("product"),
-			endpoint.WithBody(models.ProductPost{}),
-			endpoint.WithSuccessfulReturns([]response.Info{response.New(models.Product{}, "201", "Created Product")}),
-			endpoint.WithErrors([]response.Info{response.New([]models.ErrorResponse{}, "400", "")}),
-			endpoint.WithProduce([]mime.MIME{mime.JSON, mime.XML}),
 		),
 	}
 
